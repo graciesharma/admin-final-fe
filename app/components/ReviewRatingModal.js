@@ -1,5 +1,13 @@
 import React from "react";
-import { Modal, Text, Rating, Stack, Divider } from "@mantine/core";
+import {
+  Modal,
+  Text,
+  Rating,
+  Stack,
+  Divider,
+  Flex,
+  Button,
+} from "@mantine/core";
 import ToiletService from "../services/ToiletService";
 
 const ReviewRatingModal = ({ opened, close, toiletId }) => {
@@ -19,13 +27,16 @@ const ReviewRatingModal = ({ opened, close, toiletId }) => {
       size="lg"
       padding={20}
     >
-      <Stack gap="xs">
+      <Stack gap="0.5rem">
         {reviewsData?.map((reviewRating, index) => (
           <React.Fragment key={index}>
-            <Stack gap="xs">
-              <Text>{reviewRating.fullName}</Text>
-              <Text>{reviewRating.emailAddress}</Text>
-              <Text>{reviewRating.description}</Text>
+            <Stack>
+              <Flex justify="space-between">
+                <Text fw="bold">Name: {reviewRating.fullName}</Text>
+                <Button color="red">Delete Review</Button>
+              </Flex>
+              <Text>Email: {reviewRating.emailAddress}</Text>
+              <Text color="gray">{reviewRating.description}</Text>
               <Rating value={reviewRating.rating} fractions={2} readOnly />
             </Stack>
             <Divider />
