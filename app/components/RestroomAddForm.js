@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   Modal,
+  MultiSelect,
   NumberInput,
   Select,
   Stack,
@@ -150,7 +151,7 @@ const RestroomAddForm = ({ opened, close, toiletId, onSubmit }) => {
               {...methods}
               render={({ field }) => {
                 return (
-                  <Select
+                  <MultiSelect
                     placeholder="Tags"
                     label="Tags"
                     data={[
