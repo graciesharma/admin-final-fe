@@ -1,5 +1,5 @@
 import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, Controller } from "react-hook-form";
 import { useMediaQuery } from "@mantine/hooks";
 import {
   Box,
@@ -15,11 +15,20 @@ import {
   Divider,
 } from "@mantine/core";
 
-const AddReviewModal = ({ opened, onClose, onSubmit }) => {
+const AddReviewModal = ({ opened, onClose, toiletId, onSubmit }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const methods = useForm();
-  const { handleSubmit: submitForm, ...rest } = methods;
+  const { handleSubmit, ...rest } = methods;
   const { isSubmittingReview, ...method } = rest;
+
+  const [ratingValue, setRatingValue] = React.useState(0);
+
+  const onHandleSubmit = (value) => {
+    onSubmit({
+      ...value,
+      rating: ratingValue,
+    });
+  };
 
   return (
     <Modal
@@ -42,7 +51,7 @@ const AddReviewModal = ({ opened, onClose, onSubmit }) => {
         },
         close: {
           "& svg": {
-            padding:"2rem",
+            padding: "2rem",
             width: "2rem",
             height: "2rem",
           },
@@ -64,27 +73,45 @@ const AddReviewModal = ({ opened, onClose, onSubmit }) => {
           <Divider />
         </Stack>
         <FormProvider {...method}>
-          <Box component="form" onSubmit>
+          <form onSubmit={handleSubmit(onHandleSubmit)}>
             <Box>
               <Stack mb="2.4rem" spacing={0}>
                 <Flex mb="1.2rem">
                   <Text size={20} weight={600}>
-                    Please provide your information{" "}
+                    Please provide your information
                   </Text>
                   &nbsp;
                 </Flex>
                 <Stack spacing={16}>
-                  <TextInput
-                    label="Full name"
-                    radius={8}
-                    data-autofocus
-                    placeholder="Your full name "
+                  <Controller
+                    {...methods}
+                    render={({ field }) => {
+                      return (
+                        <TextInput
+                          label="Full name"
+                          radius={8}
+                          data-autofocus
+                          placeholder="Your full name "
+                          {...field}
+                        />
+                      );
+                    }}
+                    name="fullName"
                   />
-                  <TextInput
-                    name="email"
-                    label="Email"
-                    placeholder="Contact email address"
-                    radius={8}
+                  <Controller
+                    {...methods}
+                    render={({ field }) => {
+                      return (
+                        <TextInput
+                          name="email"
+                          label="Email"
+                          placeholder="Contact email address"
+                          radius={8}
+                          {...field}
+                        />
+                      );
+                    }}
+                    name="emailAddress"
                   />
                 </Stack>
               </Stack>
@@ -95,19 +122,31 @@ const AddReviewModal = ({ opened, onClose, onSubmit }) => {
                   </Text>
                   &nbsp;
                 </Flex>
-                <Rating size="xl" />
-
-                <TextInput
-                  sx={{
-                    TextInput: {
-                      width: "4rem",
-                    },
+                <Rating
+                  size="xl"
+                  value={ratingValue}
+                  onChange={setRatingValue}
+                />
+                <Controller
+                  {...methods}
+                  render={({ field }) => {
+                    return (
+                      <TextInput
+                        sx={{
+                          TextInput: {
+                            width: "4rem",
+                          },
+                        }}
+                        name="description"
+                        mt="2rem"
+                        mb="4rem"
+                        radius={8}
+                        placeholder="Add something about your experience"
+                        {...field}
+                      />
+                    );
                   }}
                   name="description"
-                  mt="2rem"
-                  mb="4rem"
-                  radius={8}
-                  placeholder="Add something about your experience "
                 />
               </Stack>
             </Box>
@@ -116,7 +155,6 @@ const AddReviewModal = ({ opened, onClose, onSubmit }) => {
                 Cancel
               </Button>
               <Button
-              onClick={submitForm}
                 type="submit"
                 rounded
                 disabled={isSubmittingReview}
@@ -128,7 +166,7 @@ const AddReviewModal = ({ opened, onClose, onSubmit }) => {
                 Submit
               </Button>
             </Group>
-          </Box>
+          </form>
         </FormProvider>
       </Box>
     </Modal>

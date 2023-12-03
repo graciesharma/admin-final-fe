@@ -86,6 +86,13 @@ export default function Home() {
     }
   };
 
+  const onSubmitReview = (data) => {
+    toiletService.addReview(toiletId, data).then(() => {
+      reviewModalClosed();
+      load();
+    });
+  };
+
   const handleLogout = () => {
     document.cookie =
       "authtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -195,7 +202,10 @@ export default function Home() {
                   </Button>
                   <Button
                     color="pink"
-                    onClick={() => reviewModalOpen()} // Open AddReviewModal
+                    onClick={() => {
+                      setToiletId(toilet.id);
+                      reviewModalOpen();
+                    }} // Open AddReviewModal
                   >
                     Add Review
                   </Button>
@@ -220,8 +230,14 @@ export default function Home() {
           toiletId={toiletId}
         />
       )}
-
-      <AddReview opened={reviewModalOpened} onClose={reviewModalClosed} />
+      {reviewModalOpened && (
+        <AddReview
+          opened={reviewModalOpened}
+          onClose={reviewModalClosed}
+          toiletId={toiletId}
+          onSubmit={onSubmitReview}
+        />
+      )}
     </AppShell>
   );
 }
