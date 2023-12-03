@@ -18,6 +18,12 @@ const ReviewRatingModal = ({ opened, close, toiletId }) => {
     toiletService.getReview(toiletId).then((data) => setReviewsData(data.data));
   }, [toiletId, toiletService]);
 
+  const deleteReview = (reviewId) => {
+    const deletedReview = reviewsData.filter(({ id }) => id !== reviewId);
+    setReviewsData(deletedReview);
+    toiletService.deleteReview(toiletId, reviewId).then(() => {});
+  };
+
   return (
     <Modal
       opened={opened}
@@ -33,7 +39,12 @@ const ReviewRatingModal = ({ opened, close, toiletId }) => {
             <Stack>
               <Flex justify="space-between">
                 <Text fw="bold">Name: {reviewRating.fullName}</Text>
-                <Button color="red">Delete Review</Button>
+                <Button
+                  color="red"
+                  onClick={() => deleteReview(reviewRating.id)}
+                >
+                  Delete Review
+                </Button>
               </Flex>
               <Text>Email: {reviewRating.emailAddress}</Text>
               <Text color="gray">{reviewRating.description}</Text>

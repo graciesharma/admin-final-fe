@@ -36,8 +36,8 @@ class ToiletService {
     return axios.get(`${TOILET_API_URL}/${id}/reviews`);
   }
 
-  deleteReview(id, user) {
-    return axios.delete(`${TOILET_API_URL}/${id}/reviews`, { data: { user } });
+  deleteReview(toiletId, reviewId) {
+    return axios.delete(`${TOILET_API_URL}/${toiletId}/reviews/${reviewId}`);
   }
 }
 
