@@ -46,7 +46,7 @@ const ReviewRatingModal = ({ opened, close, toiletId }) => {
                   Delete Review
                 </Button>
               </Flex>
-              <Text>Email: {reviewRating.emailAddress}</Text>
+              <Text>Email: {reviewRating.email}</Text>
               <Text color="gray">{reviewRating.description}</Text>
               <Rating value={reviewRating.rating} fractions={2} readOnly />
             </Stack>

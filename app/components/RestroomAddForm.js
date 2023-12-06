@@ -39,6 +39,7 @@ const RestroomAddForm = ({ opened, close, toiletId, onSubmit }) => {
     if (!toiletId) return;
     toiletService.get(toiletId).then((response) => {
       const responseData = response.data;
+      console.log(responseData.tags);
       setValue("name", responseData.name);
       setValue("latitude", responseData.coords.latitude);
       setValue("longitude", responseData.coords.longitude);
@@ -65,18 +66,18 @@ const RestroomAddForm = ({ opened, close, toiletId, onSubmit }) => {
     setValue("longitude", e.latLng.lng());
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${e.latLng.lat()},${e.latLng.lng()}&key=AIzaSyCkWaxfKNAgjBQHtGKW_rQg6uPnr-zzgFg`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${e.latLng.lat()},${e.latLng.lng()}&key=AIzaSyCkWaxfKNAgjBQHtGKW_rQg6uPnr-zzgFg`,
       );
       const data = await response.json();
       if (data.results.length > 0) {
         const addressResult = data.results[0];
 
         const locationName = addressResult.address_components.filter(
-          (component) => component.types.includes("locality")
+          (component) => component.types.includes("locality"),
         );
 
         const countryName = addressResult.address_components.filter(
-          (component) => component.types.includes("country")
+          (component) => component.types.includes("country"),
         );
 
         setValue("locationName", locationName[0].long_name);
