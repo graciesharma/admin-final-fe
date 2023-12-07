@@ -39,7 +39,6 @@ const RestroomAddForm = ({ opened, close, toiletId, onSubmit }) => {
     if (!toiletId) return;
     toiletService.get(toiletId).then((response) => {
       const responseData = response.data;
-      console.log(responseData.tags);
       setValue("name", responseData.name);
       setValue("latitude", responseData.coords.latitude);
       setValue("longitude", responseData.coords.longitude);
